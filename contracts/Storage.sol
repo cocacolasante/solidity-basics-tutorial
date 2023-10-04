@@ -52,14 +52,14 @@ contract Storage{
     }
 
     // update storage string
-    function updateString(string memory newString) public {
+    function updateString(string memory newString) public LiveContract{
         numOfUpdates++;
         storageString = newString;
         emit StorageUpdated(msg.sender, newString);
     }
 
     // delete storage string by setting to empty value
-    function deleteString() public{
+    function deleteString() public LiveContract{
         storageString = "";
         emit StorageUpdated(msg.sender, "");
     }
