@@ -48,6 +48,7 @@ contract Storage{
         numOfUpdates++;
         storageString = startingString;
         status = ContractStatus.live;
+        owner = msg.sender;
     }
 
     // update storage string

@@ -28,26 +28,28 @@ contract ToDo{
     constructor(){
         owner = msg.sender;
     }
-
+    // CREATE
     function addTodo(string memory item) public onlyOwner{
         todoCount++;
         todos[todoCount] = ToDo(item, false);
         emit AddedTodo(todoCount, block.timestamp);
     }
-
+    // UPDATE
     function completeTodo(uint256 todoNum) public onlyOwner{
         todos[todoNum].completed = true;
     }
-
+    // DELETE
     function deleteTodo(uint256 todoNum) public onlyOwner{
         todos[todoNum].completed = false;
         todos[todoNum].item = "";
     }
 
+    // UPDATE
     function updateTodo(string memory updateItem, uint256 todoNum) public onlyOwner{
         todos[todoNum].item = updateItem;
     }
 
+    // READ
     function returnTodo(uint256 todoNum) public view returns(ToDo memory){
         return todos[todoNum];
     }
