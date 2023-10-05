@@ -35,11 +35,43 @@ describe("Storage Contract", () =>{
             await expect( StorageContract.connect(user1).setUserVariable("TEST", 1)).to.be.revertedWith("contract is paused")
             await expect( StorageContract.connect(user1).deleteUserVariable()).to.be.revertedWith("contract is paused")
         })
+        it("checks the status was unpaused", async ()=>{
+            await StorageContract.connect(deployer).unpauseContractStatus()
+            expect(await StorageContract.status()).to.equal(0)
+        })
     })
     describe("Main Storage String functions", () =>{
-
+        it("checks the storageString is updated to 'TEST'", async () =>{
+            await StorageContract.connect(user2).updateString("TEST")
+            expect(await StorageContract.getStorageString()).to.equal("TEST")
+        })
+        it("checks the storage sting is deleted set to ''", async ()=>{
+            await StorageContract.connect(user3).deleteString()
+            expect(await StorageContract.getStorageString()).to.equal("")
+        })
     })
     describe("Users Storage String Mapping function", () =>{
+        it("checks the users struct was created by user1, username1, value of 10", async () =>{
+            await StorageContract.connect(user1).setUserVariable("test string", 10 )
+            const user1Struct = await StorageContract.getUserStorage(user1.address)
+            expect(user1Struct._storageString).to.equal("test string")
+            expect(user1Struct.amount).to.equal(10)
+
+        })
+        it("checks the users struct was deleted by user1", async () =>{
+            await StorageContract.connect(user1).deleteUserVariable()
+            const user1Struct = await StorageContract.getUserStorage(user1.address)
+            expect(user1Struct._storageString).to.equal("")
+            expect(user1Struct.amount).to.equal(0)
+
+        })
+        it("checks the update storage event was emitted", async () =>{
+            expect(await StorageContract.connect(user2).setUserVariable("test2", 10)).to.emit("StorageUpdated")
+        })
+        it("checks the delete storage event was emitted", async () =>{
+            await StorageContract.connect(user2).setUserVariable("test2", 10)
+            expect(await StorageContract.connect(user2).deleteUserVariable()).to.emit("StorageUpdated")
+        })
 
     })
 })

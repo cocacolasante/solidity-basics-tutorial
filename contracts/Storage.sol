@@ -16,7 +16,7 @@ contract Storage{
 
     // STRUCT -a custom data type
     struct UserStorage{
-        string storageString;
+        string _storageString;
         uint amount;
     }
 
