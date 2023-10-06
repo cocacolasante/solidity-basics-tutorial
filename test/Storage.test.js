@@ -40,12 +40,13 @@ describe("Storage Contract", () =>{
             expect(await StorageContract.status()).to.equal(0)
         })
     })
-    describe("Main Storage String functions", () =>{
+    describe("Global Storage String functions", () =>{
         it("checks the storageString is updated to 'TEST'", async () =>{
             await StorageContract.connect(user2).updateString("TEST")
             expect(await StorageContract.getStorageString()).to.equal("TEST")
+            expect(await StorageContract.numOfUpdates()).to.equal(2)
         })
-        it("checks the storage sting is deleted set to ''", async ()=>{
+        it("checks the storage string is deleted set to ''", async ()=>{
             await StorageContract.connect(user3).deleteString()
             expect(await StorageContract.getStorageString()).to.equal("")
         })
@@ -66,11 +67,11 @@ describe("Storage Contract", () =>{
 
         })
         it("checks the update storage event was emitted", async () =>{
-            expect(await StorageContract.connect(user2).setUserVariable("test2", 10)).to.emit("StorageUpdated")
+            expect(await StorageContract.connect(user2).setUserVariable("test2", 10)).to.emit("StorageUpdated").withArgs(user2.address, "test2")
         })
         it("checks the delete storage event was emitted", async () =>{
             await StorageContract.connect(user2).setUserVariable("test2", 10)
-            expect(await StorageContract.connect(user2).deleteUserVariable()).to.emit("StorageUpdated")
+            expect(await StorageContract.connect(user2).deleteUserVariable()).to.emit("StorageUpdated").withArgs(user2.address, "")
         })
 
     })

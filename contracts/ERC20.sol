@@ -1,23 +1,35 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-contract Token is ERC20{
-    address public owner;
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-    constructor(string memory name, string memory symbol) ERC20(name, symbol){
-        owner = msg.sender;
-        // mint total supply to deployer
-        _mint(msg.sender, 1000 *(10e18));
+
+contract TBDToken is ERC20, ERC20Burnable, Ownable, AccessControl{
+    using SafeERC20 for ERC20;
+
+    uint256 _totalSupply;
+    bytes32 public constant MANAGER_ROLE =keccak256("MANAGE_ROLE");
+
+    mapping(address=>uint256) private _balances;
+
+    constructor()ERC20("TBD Token", "TBDT"){
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(MANAGER_ROLE, msg.sender);
     }
 
-    function burn(uint amount) public{
-        require(msg.sender == owner, "only owner can call function");
-        require(balanceOf(msg.sender) >= amount, "not enough funds");
+    function mint(uint256 amount) external{
+        require(hasRole(MANAGER_ROLE, msg.sender), "not allowed");
+        _totalSupply += amount;
+        _balances[msg.sender] += amount;
 
-        _burn(msg.sender, amount);
-
+        _mint(msg.sender, amount);
+        
     }
 
-    
 }
