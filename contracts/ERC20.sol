@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 
-contract TBDToken is ERC20, ERC20Burnable, Ownable, AccessControl{
+contract OZERC20 is ERC20, ERC20Burnable, Ownable, AccessControl{
     using SafeERC20 for ERC20;
 
     uint256 _totalSupply;
@@ -18,7 +18,7 @@ contract TBDToken is ERC20, ERC20Burnable, Ownable, AccessControl{
 
     mapping(address=>uint256) private _balances;
 
-    constructor()ERC20("TBD Token", "TBDT"){
+    constructor()ERC20("Dojo Coin", "DJC"){
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MANAGER_ROLE, msg.sender);
     }
