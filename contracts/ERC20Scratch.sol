@@ -2,11 +2,12 @@
 pragma solidity ^0.8.0;
 
 
-contract Token {
+contract TokenFromScratch {
     string public name;
     string public symbol;
     uint256 public decimals = 18;
     uint256 public totalSupply;
+    address public owner;
 
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
@@ -30,8 +31,9 @@ contract Token {
     ) {
         name = _name;
         symbol = _symbol;
-        totalSupply = _totalSupply * (10**decimals);
+        totalSupply = _totalSupply * (10**decimals); 
         balanceOf[msg.sender] = totalSupply;
+        owner = msg.sender;
     }
 
     function transfer(address _to, uint256 _value)
