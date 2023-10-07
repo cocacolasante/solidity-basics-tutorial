@@ -40,7 +40,7 @@ contract TokenFromScratch {
         public
         returns (bool success)
     {
-        require(balanceOf[msg.sender] >= _value);
+        require(balanceOf[msg.sender] >= _value, "Low balance");
 
         _transfer(msg.sender, _to, _value);
 
@@ -52,7 +52,7 @@ contract TokenFromScratch {
         address _to,
         uint256 _value
     ) internal {
-        require(_to != address(0));
+        require(_to != address(0), "Cannot send to null address");
 
         balanceOf[_from] = balanceOf[_from] - _value;
         balanceOf[_to] = balanceOf[_to] + _value;
@@ -64,7 +64,7 @@ contract TokenFromScratch {
         public
         returns(bool success)
     {
-        require(_spender != address(0));
+        require(_spender != address(0), "Null Address");
 
         allowance[msg.sender][_spender] = _value;
 
@@ -80,7 +80,7 @@ contract TokenFromScratch {
         public
         returns (bool success)
     {
-        require(_value <= balanceOf[_from]);
+        require(_value <= balanceOf[_from], "Low balance");
         require(_value <= allowance[_from][msg.sender]);
 
         allowance[_from][msg.sender] = allowance[_from][msg.sender] - _value;
