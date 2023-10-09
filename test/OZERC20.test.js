@@ -22,7 +22,7 @@ describe("ERC20 From Open Zeppelin", () =>{
         it("checks the owner of oz is the deployer", async () =>{
             expect(await OZERC20.owner()).to.equal(deployer.address)
         })
-        it("checks name, symbol, total supply as Dojo Coin, DJC, 1,000,000", async () =>{
+        it("checks name, symbol, as Dojo Coin, DJC", async () =>{
             expect(await OZERC20.name()).to.equal("Dojo Coin")
             expect(await OZERC20.symbol()).to.equal("DJC")
            

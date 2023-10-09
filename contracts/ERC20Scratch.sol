@@ -10,7 +10,7 @@ contract TokenFromScratch {
     address public owner;
 
     mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
+    mapping(address => mapping(address => uint256)) public allowance; 
 
     event Transfer(
         address indexed from,

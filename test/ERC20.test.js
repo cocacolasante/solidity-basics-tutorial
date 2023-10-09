@@ -3,7 +3,7 @@ const hre  = require( "hardhat")
 
 const tokens = (n) => {
     return ethers.parseUnits(n.toString(), 'ether')
-  }
+}
 const totalSupply = tokens('1000000')
 
 describe("ERC20 From Scratch", () =>{
@@ -77,7 +77,10 @@ describe("ERC20 From Scratch", () =>{
                 expect(await Scratch.allowance(deployer.address, exchange.address)).to.be.equal(0)
             })
             it('emits a Transfer event', async () => {  
-                expect( await Scratch.connect(deployer).transfer(user1.address, value)).to.emit('Transfer')
+                tx = await Scratch.connect(deployer).approve(exchange.address, value) // approves the token transfer
+                res = await tx.wait()
+                
+                expect( await Scratch.connect(exchange).transferFrom(deployer.address, user1.address, value)).to.emit('Transfer')
                     .withArgs(deployer.address, user1.address, value) 
             })
         })
