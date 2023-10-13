@@ -8,7 +8,7 @@ contract ToDo{
     uint256 public todoCount;
 
     // to do struct
-    struct ToDo{
+    struct ToDoStruct{
         string item;
         bool completed;
     }
@@ -16,6 +16,7 @@ contract ToDo{
     // events for added and completed todos
     event AddedTodo(uint256 indexed _todonum, uint256 timestamp);
     event CompletedTodo(uint256 indexed _todonum, uint256 timestamp);
+    event DeletedTodo(uint256 indexed _todonum, uint256 timestamp);
 
     // modifier
     modifier onlyOwner{
@@ -23,7 +24,7 @@ contract ToDo{
         _;
     }
     // mapping of todocount to struct
-    mapping(uint=>ToDo) private todos;
+    mapping(uint=>ToDoStruct) private todos;
 
     constructor(){
         owner = msg.sender;
@@ -31,7 +32,7 @@ contract ToDo{
     // CREATE
     function addTodo(string memory item) public onlyOwner{
         todoCount++;
-        todos[todoCount] = ToDo(item, false);
+        todos[todoCount] = ToDoStruct(item, false);
         emit AddedTodo(todoCount, block.timestamp);
     }
     // UPDATE
@@ -42,6 +43,7 @@ contract ToDo{
     function deleteTodo(uint256 todoNum) public onlyOwner{
         todos[todoNum].completed = false;
         todos[todoNum].item = "";
+        emit DeletedTodo(todoNum, block.timestamp);
     }
 
     // UPDATE
@@ -50,7 +52,7 @@ contract ToDo{
     }
 
     // READ
-    function returnTodo(uint256 todoNum) public view returns(ToDo memory){
+    function returnTodo(uint256 todoNum) public view returns(ToDoStruct memory){
         return todos[todoNum];
     }
 }
