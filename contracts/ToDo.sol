@@ -47,7 +47,7 @@ contract ToDo{
     }
 
     // UPDATE
-    function updateTodo(string memory updateItem, uint256 todoNum) public onlyOwner{
+    function updateTodo( uint256 todoNum, string memory updateItem) public onlyOwner{
         todos[todoNum].item = updateItem;
     }
 
