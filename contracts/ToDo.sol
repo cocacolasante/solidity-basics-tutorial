@@ -55,4 +55,5 @@ contract ToDo{
     function returnTodo(uint256 todoNum) public view returns(ToDoStruct memory){
         return todos[todoNum];
     }
+
 }
