@@ -18,10 +18,6 @@ contract Vault {
         owner = msg.sender;
     }
 
-    function approveStoreTokens(address tokenAddress, uint256 amount) public{
-        IERC20(tokenAddress).approve(address(this), amount);
-    }
-
     function storeTokens(address tokenAddress, uint256 amount) public {
         if(tokenBalances[tokenAddress] == 0){
             storedTokenAddress.push(tokenAddress);
@@ -46,20 +42,15 @@ contract Vault {
         require(tokenBalances[tokenAddress] > 0, "No token funds");
         uint transferAmount = tokenBalances[tokenAddress];
         tokenBalances[tokenAddress] = 0;
+        for(uint i =0; i <storedTokenAddress.length; i++){
+            if(storedTokenAddress[i]== tokenAddress){
+                delete storedTokenAddress[i];
+            }
+        }
         
         IERC20(tokenAddress).transfer(owner, transferAmount);
     }
-
-    function withdrawAlltokens() public {
-        require(msg.sender == owner, "Only Owner check");
-        for(uint i =0; i < storedTokenAddress.length; i++){
-            uint transferAmount = tokenBalances[storedTokenAddress[i]];
-            tokenBalances[storedTokenAddress[i]] = 0;
-
-            IERC20(storedTokenAddress[i]).transfer(owner, transferAmount);
-        }
-
-    }
+    
     function returnTokenList() public view returns(address[] memory){
         return storedTokenAddress;
     }
