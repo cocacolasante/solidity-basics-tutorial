@@ -18,14 +18,14 @@ contract Vault {
         owner = msg.sender;
     }
 
-    function storeTokens(address tokenAddress, uint256 amount) public {
-        if(tokenBalances[tokenAddress] == 0){
-            storedTokenAddress.push(tokenAddress);
+    function storeTokens(address token, uint256 amount) public {
+        if(tokenBalances[token] == 0){
+            storedTokenAddress.push(token);
         }
 
-        tokenBalances[tokenAddress] += amount;
-        IERC20(tokenAddress).approve(address(this), amount);
-        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        tokenBalances[token] += amount;
+        IERC20(token).approve(address(this), amount);
+        IERC20(token).transferFrom(msg.sender, address(this), amount);
     }
 
     function withdrawEther() public returns(bool){
